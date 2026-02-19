@@ -1,0 +1,333 @@
+import React, { useState, useEffect } from 'react';
+import { Sparkles, Palette, Brush, ChevronRight, RefreshCcw, Award, Heart, Info } from 'lucide-react';
+
+const questions = [
+  {
+    type: 'concept',
+    category: '인상주의',
+    question: "햇빛이 쨍쨍한 날, 시시각각 변하는 빛의 색깔을 그대로 담고 싶어 했던 화가들이 있었어요. '인상: 해돋이'라는 작품 제목에서 이름이 따온 이 사조는 뭘까요?",
+    options: ["인상주의", "표현주의", "입체주의", "후기인상주의"],
+    answer: 0,
+    hint: "순간의 '인상'을 포착하는 게 가장 중요했어요!",
+    rationale: "인상주의 화가들은 고정된 색 대신 빛에 의해 계속 변하는 찰나의 색채를 그렸답니다."
+  },
+  {
+    type: 'image',
+    category: '인상주의',
+    image: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Claude_Monet%2C_Rouen_Cathedral%2C_West_Fa%C3%A7ade%2C_Sunlight%2C_1894.jpg",
+    question: "이 그림은 같은 성당을 아침, 낮, 저녁마다 다르게 그린 연작 중 하나예요. 빛의 마법사라고 불리는 이 작가는 누구일까요?",
+    options: ["빈센트 반 고흐", "클로드 모네", "파블로 피카소", "에드바르 뭉크"],
+    answer: 1,
+    hint: "인상주의의 시작을 알린 아주 유명한 분이에요.",
+    rationale: "클로드 모네는 루앙 대성당을 시간에 따라 다르게 그리는 연작을 통해 빛의 변화를 탐구했어요."
+  },
+  {
+    type: 'image',
+    category: '후기인상주의',
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+    question: "밤하늘의 별이 마치 살아 움직이는 것처럼 소용돌이치고 있네요! 자신의 강렬한 감정을 붓질에 담아낸 이 작가는 누구일까요?",
+    options: ["파블로 피카소", "에드바르 뭉크", "클로드 모네", "빈센트 반 고흐"],
+    answer: 3,
+    hint: "해바라기를 사랑했고, 귀를 다쳤던 슬픈 사연이 있는 화가예요.",
+    rationale: "빈센트 반 고흐는 후기 인상주의의 대표 주자로, 주관적인 색채와 역동적인 필치가 특징이에요."
+  },
+  {
+    type: 'concept',
+    category: '표현주의',
+    question: "그림을 그릴 때 예쁘게 그리는 것보다 내 마음속의 불안, 공포, 슬픔 같은 진짜 감정을 '폭발'시키듯 표현하는 스타일을 무엇이라고 할까요?",
+    options: ["인상주의", "입체주의", "표현주의", "사실주의"],
+    answer: 2,
+    hint: "마음의 소리를 밖으로 '표현'하는 데 집중해요.",
+    rationale: "표현주의는 작가의 내면세계를 드러내기 위해 형태를 왜곡하거나 강렬한 색을 사용하곤 해요."
+  },
+  {
+    type: 'concept',
+    category: '입체주의',
+    question: "우리는 보통 한 쪽에서만 사물을 보죠? 그런데 이 화가들은 사물을 조각조각 내서 앞, 옆, 위 모습을 한 화면에 다 보여주려고 했어요. 이 독특한 스타일은?",
+    options: ["인상주의", "입체주의", "낭만주의", "후기인상주의"],
+    answer: 1,
+    hint: "사물을 '입체적'으로 분석해서 재구성하는 방식이에요.",
+    rationale: "입체주의(큐비즘)는 다시점(여러 시점)을 도입해 현대 미술의 기초를 닦았답니다."
+  },
+  {
+    type: 'image',
+    category: '입체주의',
+    image: "https://upload.wikimedia.org/wikipedia/en/1/14/Picasso_The_Weeping_Woman_1937.jpg",
+    question: "여인의 얼굴이 마치 퍼즐 조각처럼 나뉘어 있네요. 슬픔을 입체적으로 표현한 이 그림을 그린 20세기 최고의 천재 화가는?",
+    options: ["클로드 모네", "빈센트 반 고흐", "파블로 피카소", "에드바르 뭉크"],
+    answer: 2,
+    hint: "스페인 출신으로 '아비뇽의 여인들'도 그렸어요.",
+    rationale: "파블로 피카소는 형태를 해체하고 결합하는 입체주의 기법으로 '우는 여인'을 그렸습니다."
+  },
+  {
+    type: 'concept',
+    category: '후기인상주의',
+    question: "인상주의가 빛만 쫓아다니다 보니 형태가 너무 흐릿해졌다고 생각한 화가들이에요. 조금 더 단단한 형태나 개인의 개성을 담으려 노력한 이들은?",
+    options: ["고전주의", "미래주의", "야수파", "후기인상주의"],
+    answer: 3,
+    hint: "인상주의 '이후'에 나타난 개성 강한 화가들이에요.",
+    rationale: "세잔, 고흐, 고갱 같은 후기 인상주의자들은 자신만의 조형 언어를 구축했습니다."
+  },
+  {
+    type: 'concept',
+    category: '표현주의',
+    question: "에드바르 뭉크의 '절규'라는 작품 기억하나요? 다리 위에서 얼굴을 감싸고 비명을 지르는 모습! 이 작품은 어떤 사조의 대표작일까요?",
+    options: ["입체주의", "표현주의", "인상주의", "신고전주의"],
+    answer: 1,
+    hint: "인간의 근원적인 '불안'이라는 감정을 아주 잘 표현했어요.",
+    rationale: "뭉크는 표현주의의 선구자로, 인간의 내면적 고통을 시각적으로 형상화했습니다."
+  },
+  {
+    type: 'concept',
+    category: '입체주의',
+    question: "피카소와 브라크 같은 화가들은 왜 사물을 여러 방향에서 본 것처럼 그렸을까요? 가장 큰 이유는 무엇일까요?",
+    options: ["그리기 귀찮아서", "사물의 진실된 모습을 다 담고 싶어서", "물감이 부족해서", "붓이 망가져서"],
+    answer: 1,
+    hint: "한 면만 봐서는 그 사물의 진짜 모습을 알 수 없다고 생각했거든요.",
+    rationale: "입체파는 2차원 캔버스에 3차원 대상의 모든 면을 동시에 보여주려는 지적인 시도를 했습니다."
+  },
+  {
+    type: 'summary',
+    category: '미술사 정리',
+    question: "오늘 배운 네 가지 사조 중, '빛의 변화'를 가장 사랑해서 야외에서 주로 그림을 그렸던 팀은 어디일까요? (마지막 복습!)",
+    options: ["표현주의", "인상주의", "입체주의", "후기인상주의"],
+    answer: 1,
+    hint: "모네, 르누아르가 속한 팀이에요!",
+    rationale: "인상주의자들은 빛이 사라지기 전에 빨리 그리려고 캔버스를 들고 밖으로 나갔답니다."
+  }
+];
+
+const App = () => {
+  const [currentStep, setCurrentStep] = useState('start'); // start, quiz, result
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+
+  const handleStart = () => {
+    setCurrentStep('quiz');
+    setCurrentIndex(0);
+    setScore(0);
+  };
+
+  const handleAnswer = (index) => {
+    if (isAnswered) return;
+    setSelectedOption(index);
+    setIsAnswered(true);
+    if (index === questions[currentIndex].answer) {
+      setScore(prev => prev + 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex(prev => prev + 1);
+      setSelectedOption(null);
+      setIsAnswered(false);
+      setShowHint(false);
+    } else {
+      setCurrentStep('result');
+    }
+  };
+
+  const getCardColor = (category) => {
+    switch (category) {
+      case '인상주의': return 'bg-yellow-50 border-yellow-200';
+      case '후기인상주의': return 'bg-blue-50 border-blue-200';
+      case '표현주의': return 'bg-red-50 border-red-200';
+      case '입체주의': return 'bg-purple-50 border-purple-200';
+      default: return 'bg-orange-50 border-orange-200';
+    }
+  };
+
+  const getTagColor = (category) => {
+    switch (category) {
+      case '인상주의': return 'bg-yellow-400 text-yellow-900';
+      case '후기인상주의': return 'bg-blue-400 text-white';
+      case '표현주의': return 'bg-red-400 text-white';
+      case '입체주의': return 'bg-purple-400 text-white';
+      default: return 'bg-orange-400 text-white';
+    }
+  };
+
+  if (currentStep === 'start') {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-orange-50 p-6 font-sans text-gray-800">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center border-4 border-orange-200">
+          <div className="mb-6 flex justify-center">
+            <div className="p-4 bg-orange-100 rounded-full">
+              <Palette size={64} className="text-orange-500 animate-bounce" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-black text-orange-600 mb-2">근대 미술 대탐험!</h1>
+          <p className="text-gray-600 mb-8 leading-relaxed">
+            인상주의부터 입체주의까지!<br/>
+            재미있는 퀴즈로 미술 고수가 되어볼까요? ✨
+          </p>
+          <button 
+            onClick={handleStart}
+            className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xl rounded-2xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2"
+          >
+            퀴즈 시작하기 <ChevronRight />
+          </button>
+        </div>
+        <p className="mt-8 text-sm text-gray-400 flex items-center gap-1">
+          <Brush size={14} /> 고등학교 미술 시간용
+        </p>
+      </div>
+    );
+  }
+
+  if (currentStep === 'result') {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-indigo-50 p-6 text-gray-800">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center border-4 border-indigo-200">
+          <div className="mb-6 flex justify-center">
+            <div className="p-4 bg-indigo-100 rounded-full">
+              <Award size={64} className="text-indigo-500" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold mb-1">탐험 완료!</h2>
+          <div className="text-5xl font-black text-indigo-600 my-6">
+            {score} / {questions.length}
+          </div>
+          <p className="text-gray-600 mb-8 px-4 leading-relaxed">
+            {score === questions.length ? "와우! 당신은 근대 미술 마스터예요! 🏆" : 
+             score >= 7 ? "훌륭해요! 미술 감각이 아주 뛰어난걸요? 😊" :
+             "조금만 더 공부하면 완벽한 미술 고수가 될 수 있어요! 💪"}
+          </p>
+          <button 
+            onClick={() => setCurrentStep('start')}
+            className="w-full py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold text-xl rounded-2xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2"
+          >
+            다시 도전하기 <RefreshCcw size={20} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQ = questions[currentIndex];
+
+  return (
+    <div className="min-h-screen bg-slate-50 p-4 pb-12 font-sans flex flex-col items-center">
+      {/* Header Info */}
+      <div className="w-full max-w-md flex justify-between items-center mb-4 px-2">
+        <span className="text-xs font-bold text-gray-400 tracking-widest uppercase">
+          Art History Quiz
+        </span>
+        <div className="flex gap-1">
+          {questions.map((_, i) => (
+            <div 
+              key={i} 
+              className={`h-1.5 w-4 rounded-full transition-colors duration-300 ${
+                i < currentIndex ? 'bg-green-400' : i === currentIndex ? 'bg-orange-400' : 'bg-gray-200'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className={`w-full max-w-md rounded-3xl shadow-lg overflow-hidden border-2 ${getCardColor(currentQ.category)} transition-colors duration-500`}>
+        {/* Category Tag */}
+        <div className="px-6 pt-6">
+          <span className={`inline-block px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${getTagColor(currentQ.category)}`}>
+            {currentQ.category}
+          </span>
+        </div>
+
+        {/* Question Area */}
+        <div className="p-6">
+          <h3 className="text-xl font-bold text-gray-800 leading-snug mb-4">
+            {currentQ.question}
+          </h3>
+
+          {/* Optional Image */}
+          {currentQ.image && (
+            <div className="mb-6 rounded-2xl overflow-hidden shadow-md border-2 border-white aspect-[4/3] bg-gray-100">
+              <img 
+                src={currentQ.image} 
+                alt="Artwork" 
+                className="w-full h-full object-cover"
+                onError={(e) => { e.target.src = 'https://via.placeholder.com/400x300?text=Image+Loading...'; }}
+              />
+            </div>
+          )}
+
+          {/* Options */}
+          <div className="space-y-3">
+            {currentQ.options.map((opt, i) => (
+              <button
+                key={i}
+                onClick={() => handleAnswer(i)}
+                disabled={isAnswered}
+                className={`w-full p-4 rounded-2xl text-left font-semibold transition-all duration-200 border-2 ${
+                  isAnswered 
+                    ? i === currentQ.answer 
+                      ? 'bg-green-100 border-green-500 text-green-700' 
+                      : i === selectedOption 
+                        ? 'bg-red-100 border-red-500 text-red-700' 
+                        : 'bg-white border-gray-100 text-gray-300'
+                    : 'bg-white border-gray-200 hover:border-orange-300 hover:bg-orange-50 active:scale-[0.98]'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm border-2 ${
+                    isAnswered && i === currentQ.answer ? 'bg-green-500 text-white border-green-500' : 'bg-gray-50 text-gray-400 border-gray-200'
+                  }`}>
+                    {String.fromCharCode(65 + i)}
+                  </div>
+                  {opt}
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Hint & Rationale */}
+          <div className="mt-6 min-h-[60px]">
+            {!isAnswered ? (
+              <button 
+                onClick={() => setShowHint(!showHint)}
+                className="text-sm font-bold text-gray-400 flex items-center gap-1 hover:text-orange-500 transition-colors"
+              >
+                <Info size={16} /> {showHint ? '힌트 숨기기' : '힌트 보기'}
+              </button>
+            ) : (
+              <div className="bg-white/60 p-4 rounded-2xl border-2 border-dashed border-gray-200 animate-in fade-in slide-in-from-bottom-2">
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  <span className="font-bold text-gray-800">알아두기:</span> {currentQ.rationale}
+                </p>
+              </div>
+            )}
+
+            {!isAnswered && showHint && (
+              <p className="mt-2 p-3 bg-yellow-100 text-yellow-800 text-sm rounded-xl font-medium animate-in zoom-in-95">
+                💡 {currentQ.hint}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Next Button */}
+      {isAnswered && (
+        <div className="w-full max-w-md mt-6 animate-in slide-in-from-bottom-4">
+          <button 
+            onClick={handleNext}
+            className="w-full py-4 bg-gray-900 text-white font-bold text-xl rounded-2xl shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-transform"
+          >
+            {currentIndex < questions.length - 1 ? '다음 문제' : '결과 확인'} <ChevronRight />
+          </button>
+        </div>
+      )}
+
+      {/* Footer Support */}
+      <div className="mt-8 text-center px-4">
+        <p className="text-xs text-gray-400 flex items-center justify-center gap-2">
+          Made with <Heart size={10} className="text-red-300 fill-red-300" /> for Art Students
+        </p>
+      </div>
+    </div>
+  );
+};
