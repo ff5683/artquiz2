@@ -39,7 +39,7 @@
 
         const questions = [
             {
-                category: '인상주의',
+                category: 'ㅇㅇ주의',
                 question: "햇빛이 쨍쨍한 날, 시시각각 변하는 빛의 색깔을 그대로 담고 싶어 했던 화가들이 있었어요. '인상: 해돋이'라는 작품 제목에서 이름이 따온 이 사조는 뭘까요?",
                 options: ["인상주의", "표현주의", "입체주의", "르네상스", "후기인상주의"],
                 answer: 0,
@@ -47,7 +47,7 @@
                 rationale: "인상주의 화가들은 고정된 색 대신 빛에 의해 계속 변하는 찰나의 색채를 그렸답니다."
             },
             {
-                category: '인상주의',
+                category: 'ㅇㅇ주의',
                 image: "https://mblogthumb-phinf.pstatic.net/MjAyMDA0MDVfMTg5/MDAxNTg2MDkwMzg2MzI4.npgQ7agFOyF-GLJwAkXd5HrGGnZ54KngT9WkoUKvQrQg.NOiy_asE73doeVnvEL8UNUlu-uMJA0Ykq0QA3mfNE74g.JPEG.jgs0207/rec5iepuAjVBgdBws9LUE3Bi.jpg?type=w800",
                 question: "이 그림은 같은 성당을 아침, 낮, 저녁마다 다르게 그린 연작 중 하나예요. 빛의 마법사라고 불리는 이 작가는 누구일까요?",
                 options: ["빈센트 반 고흐", "레오나르도 다 빈치", "클로드 모네", "파블로 피카소", "에드바르 뭉크"],
@@ -56,7 +56,7 @@
                 rationale: "클로드 모네는 루앙 대성당을 시간에 따라 다르게 그리는 연작을 통해 빛의 변화를 탐구했어요."
             },
             {
-                category: '후기인상주의',
+                category: 'ㅁㅁ주의',
                 image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
                 question: "밤하늘의 별이 마치 살아 움직이는 것처럼 소용돌이치고 있는 작품이에요! 자신의 강렬한 감정을 붓질에 담아낸 이 작가는 누구일까요?",
                 options: ["파블로 피카소", "에드바르 뭉크", "클로드 모네", "빈센트 반 고흐", "폴 세잔"],
@@ -65,7 +65,7 @@
                 rationale: "빈센트 반 고흐는 후기 인상주의의 대표 주자로, 주관적인 색채와 역동적인 필치가 특징이에요."
             },
             {
-                category: '표현주의',
+                category: '★★주의',
                 question: "그림을 그릴 때 예쁘게 그리는 것보다 내 마음속의 불안, 공포, 슬픔 같은 진짜 감정을 '폭발'시키듯 표현하는 스타일을 무엇이라고 할까요?",
                 options: ["인상주의", "입체주의", "추상주의", "표현주의", "사실주의"],
                 answer: 3,
@@ -73,7 +73,7 @@
                 rationale: "표현주의는 작가의 내면세계를 드러내기 위해 형태를 왜곡하거나 강렬한 색을 사용하곤 해요."
             },
             {
-                category: '입체주의',
+                category: '♣♣주의',
                 question: "우리는 보통 한 쪽에서만 사물을 보죠? 그런데 이 화가들은 사물을 조각조각 내서 앞, 옆, 위 모습을 한 화면에 다 보여주려고 했어요. 이 독특한 스타일은?",
                 options: ["바로크미술", "인상주의", "입체주의", "낭만주의", "후기인상주의"],
                 answer: 2,
@@ -81,7 +81,7 @@
                 rationale: "입체주의(큐비즘)는 다시점(여러 시점)을 도입해 현대 미술의 기초를 닦았답니다."
             },
             {
-                category: '입체주의',
+                category: '♣♣주의',
                 image: "https://upload.wikimedia.org/wikipedia/en/1/14/Picasso_The_Weeping_Woman_Tate_identifier_T05010_10.jpg",
                 question: "여인의 얼굴이 마치 퍼즐 조각처럼 나뉘어 있네요. 슬픔을 입체적으로 표현한 이 그림을 그린 20세기 최고의 천재 화가는?",
                 options: ["클로드 모네", "빈센트 반 고흐", "파블로 피카소", "에드바르 뭉크", "구스타프 클림트"],
@@ -121,10 +121,10 @@
 
             const getColors = (cat) => {
                 const map = {
-                    '인상주의': 'bg-yellow-400',
-                    '후기인상주의': 'bg-blue-400',
-                    '표현주의': 'bg-red-400',
-                    '입체주의': 'bg-purple-400'
+                    'ㅇㅇ주의': 'bg-yellow-400',
+                    'ㅁㅁ주의': 'bg-blue-400',
+                    '★★주의': 'bg-red-400',
+                    '♣♣주의': 'bg-purple-400'
                 };
                 return map[cat] || 'bg-orange-400';
             };
